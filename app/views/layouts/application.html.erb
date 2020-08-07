@@ -13,6 +13,7 @@
         <h1 class="grid-6"><a href="/">PicTweet</a></h1>
         <% if user_signed_in? %>
           <div class="user_nav grid-6">
+          <span>ログイン中
             <ul class="user__info">
               <li>
                 <%= link_to "マイページ", "/users/#{current_user.id}" %>
