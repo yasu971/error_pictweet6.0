@@ -9,11 +9,7 @@ RSpec.describe 'ツイート投稿', type: :system do
   context 'ツイート投稿ができるとき'do
     it 'ログインしたユーザーは新規投稿できる' do
       # ログインする
-      visit new_user_session_path
-      fill_in 'Email', with: @user.email
-      fill_in 'Password', with: @user.password
-      find('input[name="commit"]').click
-      expect(current_path).to eq root_path
+      sign_in(@user)
       # 新規投稿ページへのリンクがある
       expect(page).to have_content('投稿する')
       # 投稿ページに移動する
@@ -61,7 +57,7 @@ RSpec.describe 'ツイート編集', type: :system do
       find('input[name="commit"]').click
       expect(current_path).to eq root_path
       # ツイート1に「編集」ボタンがある
-       expect(
+      expect(
       all(".more")[1].hover
     ).to have_link '編集', href: edit_tweet_path(@tweet1)
       # 編集ページへ遷移する
@@ -74,8 +70,8 @@ RSpec.describe 'ツイート編集', type: :system do
         find('#tweet_text').value
       ).to eq @tweet1.text
       # 投稿内容を編集する
-       fill_in 'tweet_image', with: "#{@tweet1.image}+編集した画像URL"
-       fill_in 'tweet_text', with: "#{@tweet1.text}+編集したテキスト"
+      fill_in 'tweet_image', with: "#{@tweet1.image}+編集した画像URL"
+      fill_in 'tweet_text', with: "#{@tweet1.text}+編集したテキスト"
       # 編集してもTweetモデルのカウントは変わらない
       expect{
         find('input[name="commit"]').click
@@ -170,11 +166,11 @@ RSpec.describe 'ツイート削除', type: :system do
       # トップページに移動する
       visit root_path
       # ツイート1に「削除」ボタンが無い
-       expect(
+      expect(
           all(".more")[1].hover
         ).to have_no_link '削除', href: tweet_path(@tweet1)
       # ツイート2に「削除」ボタンが無い
-       expect(
+      expect(
           all(".more")[0].hover
         ).to have_no_link '削除', href: tweet_path(@tweet2)
     end
