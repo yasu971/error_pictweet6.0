@@ -61,4 +61,20 @@ RSpec.configure do |config|
   config.filter_rails_from_backtrace!
   # arbitrary gems may also be filtered via:
   # config.filter_gems_from_backtrace("gem name")
+
+  # Run system test in headless mode
+  # config.before(:each) do |example|
+  #   if example.metadata[:type] == :system
+  #     driven_by :selenium, using: :headless_chrome, screen_size: [1280, 800], options: { args: ["headless", "disable-gpu", "no-sandbox", "disable-dev-shm-usage"] }
+  #   end
+  # end
+  
+  #RailsのSystemテストでheadless_chromeに起動オプションを渡す
+  config.before(:each) do |example|
+    if example.metadata[:type] == :system
+      driven_by(:selenium, using: :headless_chrome, screen_size: [1400, 800]) do |options|
+        options.add_argument('--lang=ja-jp')
+      end
+    end
+  end
 end
